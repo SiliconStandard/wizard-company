@@ -23,6 +23,12 @@ function updateUI() {
   document.getElementById("nifflerCount").textContent = gameState.nifflers;
 }
 
+// CLICK MAGIC
+function clickMagic() {
+  gameState.magicPower += 1;
+  updateUI();
+}
+
 // BUY NIFFLER
 function buyNiffler() {
   if (gameState.magicPower >= 10) {
@@ -32,14 +38,14 @@ function buyNiffler() {
   }
 }
 
-// GAME LOOP
+// GAME LOOP (1 SECOND)
 setInterval(() => {
   gameState.magicPower += gameState.nifflers;
   updateUI();
 }, 1000);
 
-// AUTOSAVE
+// AUTOSAVE EVERY MINUTE
 setInterval(saveGame, 60000);
 
-// FIRST UPDATE
+// FIRST DRAW
 updateUI();
