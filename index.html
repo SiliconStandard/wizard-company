@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Wizard Company</title>
+
   <style>
     body {
       background: #0b0b0b;
@@ -24,11 +26,15 @@
     }
   </style>
 </head>
+
 <body>
 
   <h1>🪄 Wizard Company</h1>
 
-  <p>Magic Power: <span id="magic">0</span></p>
+  <p>
+    Magic Power:
+    <span id="magic">0</span>
+  </p>
 
   <button onclick="clickMagic()">✨ Cast Magic ✨</button>
 
@@ -40,53 +46,63 @@
   <button onclick="openTab('wands')">Wands</button>
   <button onclick="openTab('wonders')">Wonders</button>
 
-  <!-- CREATURES TAB -->
+  <!-- CREATURES -->
   <div id="creatures" class="tab">
     <h2>🐾 Creatures</h2>
 
-    <div>
-      <button onclick="buyCreature('niffler')">
-        Buy Niffler
-      </button>
-      <p>
-        Owned: <span id="nifflerOwned">0</span><br>
-        Cost: <span id="nifflerCost">10</span> Magic<br>
-        Produces: 1 Magic / sec
-      </p>
-    </div>
+    <button onclick="buyCreature('niffler')">Buy Niffler</button>
+    <p>
+      Owned: <span id="nifflerOwned">0</span><br>
+      Cost: <span id="nifflerCost">10</span><br>
+      +1 Magic / sec
+    </p>
 
     <hr>
 
-    <div>
-      <button onclick="buyCreature('mooncalf')">
-        Buy Mooncalf
-      </button>
-      <p>
-        Owned: <span id="mooncalfOwned">0</span><br>
-        Cost: <span id="mooncalfCost">50</span> Magic<br>
-        Produces: 5 Magic / sec
-      </p>
-    </div>
+    <button onclick="buyCreature('mooncalf')">Buy Mooncalf</button>
+    <p>
+      Owned: <span id="mooncalfOwned">0</span><br>
+      Cost: <span id="mooncalfCost">50</span><br>
+      +5 Magic / sec
+    </p>
   </div>
 
-  <!-- UPGRADES TAB -->
+  <!-- UPGRADES -->
   <div id="upgrades" class="tab">
     <h2>⬆️ Upgrades</h2>
-    <p>Coming soon...</p>
+
+    <button onclick="buyUpgrade('strongerSpells')">
+      Stronger Spells (x2 Click Power)
+    </button>
+    <p>
+      Cost: 25<br>
+      Status: <span id="strongerSpellsStatus">Not bought</span>
+    </p>
+
+    <hr>
+
+    <button onclick="buyUpgrade('creatureTraining')">
+      Creature Training (x2 Creature Production)
+    </button>
+    <p>
+      Cost: 100<br>
+      Status: <span id="creatureTrainingStatus">Not bought</span>
+    </p>
   </div>
 
-  <!-- WANDS TAB -->
+  <!-- WANDS -->
   <div id="wands" class="tab">
     <h2>🪄 Wands</h2>
     <p>Coming soon...</p>
   </div>
 
-  <!-- WONDERS TAB -->
+  <!-- WONDERS -->
   <div id="wonders" class="tab">
     <h2>🏰 Room of Requirement</h2>
     <p>Coming soon...</p>
   </div>
 
+  <!-- JS -->
   <script src="main.js"></script>
 </body>
 </html>
