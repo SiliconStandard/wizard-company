@@ -1,31 +1,27 @@
 let gameState = {
   magicPower: 0,
-  nifflers: 0
+  nifflers: 0,
+  clickPower: 1,
+  currentTab: "creatures"
 };
 
-// LOAD SAVE
-function loadGame() {
-  const save = localStorage.getItem("wizardSave");
-  if (save) {
-    gameState = JSON.parse(save);
-  }
-}
-loadGame();
-
-// SAVE GAME
-function saveGame() {
-  localStorage.setItem("wizardSave", JSON.stringify(gameState));
+// TAB SYSTEM
+function openTab(tab) {
+  document.querySelectorAll(".tab").forEach(t => t.style.display = "none");
+  document.getElementById(tab).style.display = "block";
+  gameState.currentTab = tab;
 }
 
 // UPDATE UI
 function updateUI() {
   document.getElementById("magic").textContent = Math.floor(gameState.magicPower);
   document.getElementById("nifflerCount").textContent = gameState.nifflers;
+  document.getElementById("clickPower").textContent = gameState.clickPower;
 }
 
 // CLICK MAGIC
 function clickMagic() {
-  gameState.magicPower += 1;
+  gameState.magicPower += gameState.clickPower;
   updateUI();
 }
 
@@ -38,14 +34,21 @@ function buyNiffler() {
   }
 }
 
-// GAME LOOP (1 SECOND)
+// CLICK UPGRADE
+function buyClickUpgrade() {
+  if (gameState.magicPower >= 25) {
+    gameState.magicPower -= 25;
+    gameState.clickPower++;
+    updateUI();
+  }
+}
+
+// GAME LOOP
 setInterval(() => {
   gameState.magicPower += gameState.nifflers;
   updateUI();
 }, 1000);
 
-// AUTOSAVE EVERY MINUTE
-setInterval(saveGame, 60000);
-
-// FIRST DRAW
+// START
+openTab("creatures");
 updateUI();
