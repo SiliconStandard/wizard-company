@@ -4,6 +4,7 @@ console.log("Wizard Company loaded");
 let gameState = {
   magic: 0,
   clickPower: 1,
+  lastSave: Date.now(), // Track last save for offline progress
 
   upgrades: {
     strongerSpells: {
@@ -56,7 +57,6 @@ function getCost(type) {
 // ---------------- BUY CREATURE ----------------
 function buyCreature(type) {
   const cost = getCost(type);
-
   if (gameState.magic >= cost) {
     gameState.magic -= cost;
     gameState.creatures[type].owned++;
@@ -120,6 +120,50 @@ setInterval(() => {
   updateUI();
 }, 1000);
 
+// ---------------- AUTOSAVE ----------------
+function saveGame() {
+  gameState.lastSave = Date.now();
+  localStorage.setItem("wizardCompanySave", JSON.stringify(gameState));
+  console.log("Game saved!");
+}
+
+// ---------------- LOAD GAME ----------------
+function loadGame() {
+  const saved = localStorage.getItem("wizardCompanySave");
+  if (!saved) return;
+
+  const loaded = JSON.parse(saved);
+
+  gameState.magic = loaded.magic || 0;
+  gameState.clickPower = loaded.clickPower || 1;
+  gameState.upgrades = loaded.upgrades || gameState.upgrades;
+  gameState.creatures = loaded.creatures || gameState.creatures;
+
+  const last = loaded.lastSave || Date.now();
+  const now = Date.now();
+  const secondsOffline = Math.floor((now - last) / 1000);
+
+  let production = 0;
+  let multiplier = gameState.upgrades.creatureTraining?.bought ? 
+                   gameState.upgrades.creatureTraining.productionMultiplier : 1;
+
+  for (let type in gameState.creatures) {
+    const c = gameState.creatures[type];
+    production += c.owned * c.production * multiplier;
+  }
+
+  const offlineMagic = production * secondsOffline;
+  gameState.magic += offlineMagic;
+
+  if (offlineMagic > 0) {
+    alert(`Welcome back! Your creatures produced ${Math.floor(offlineMagic)} magic while you were away!`);
+  }
+}
+
 // ---------------- START GAME ----------------
+loadGame();
 openTab("creatures");
 updateUI();
+
+// ---------------- AUTOSAVE INTERVAL ----------------
+setInterval(saveGame, 60000); // every 60 seconds
