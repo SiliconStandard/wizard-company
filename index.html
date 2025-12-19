@@ -9,14 +9,18 @@
       font-family: Arial;
       text-align: center;
     }
+
     button {
       padding: 10px;
       margin: 5px;
       cursor: pointer;
     }
+
     .tab {
       display: none;
-      margin-top: 20px;
+      border: 1px solid #444;
+      padding: 15px;
+      margin-top: 15px;
     }
   </style>
 </head>
@@ -36,32 +40,28 @@
   <button onclick="openTab('wands')">Wands</button>
   <button onclick="openTab('wonders')">Wonders</button>
 
-  <!-- CREATURES TAB -->
+  <!-- TABS -->
   <div id="creatures" class="tab">
     <h2>🐾 Creatures</h2>
-    <button onclick="buyNiffler()">Buy Niffler (10 Magic)</button>
-    <p>Nifflers: <span id="nifflerCount">0</span></p>
+    <p>This is the creatures tab.</p>
   </div>
 
-  <!-- UPGRADES TAB -->
   <div id="upgrades" class="tab">
     <h2>⬆️ Upgrades</h2>
-    <button onclick="buyClickUpgrade()">Stronger Clicks (25 Magic)</button>
-    <p>Click Power: <span id="clickPower">1</span></p>
+    <p>This is the upgrades tab.</p>
   </div>
 
-  <!-- WANDS TAB -->
   <div id="wands" class="tab">
     <h2>🪄 Wands</h2>
-    <p>Coming soon...</p>
+    <p>This is the wands tab.</p>
   </div>
 
-  <!-- WONDERS TAB -->
   <div id="wonders" class="tab">
     <h2>🏰 Room of Requirement</h2>
-    <p>Unlock powerful systems here later</p>
+    <p>This is the wonders tab.</p>
   </div>
 
+  <!-- SCRIPT MUST BE LAST -->
   <script src="main.js"></script>
 </body>
 </html>
