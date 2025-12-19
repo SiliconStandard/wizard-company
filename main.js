@@ -1,31 +1,77 @@
-console.log("main.js loaded");
+console.log("Creatures system loaded");
 
+// ---------------- GAME STATE ----------------
 let gameState = {
-  magicPower: 0
+  magic: 0,
+
+  creatures: {
+    niffler: {
+      owned: 0,
+      baseCost: 10,
+      production: 1
+    },
+    mooncalf: {
+      owned: 0,
+      baseCost: 50,
+      production: 5
+    }
+  }
 };
 
-// TAB SYSTEM — BULLETPROOF VERSION
-function openTab(tabId) {
-  console.log("Opening tab:", tabId);
-
+// ---------------- TAB SYSTEM (WORKING) ----------------
+function openTab(id) {
   const tabs = document.getElementsByClassName("tab");
   for (let i = 0; i < tabs.length; i++) {
     tabs[i].style.display = "none";
   }
+  document.getElementById(id).style.display = "block";
+}
 
-  const tab = document.getElementById(tabId);
-  if (tab) {
-    tab.style.display = "block";
-  } else {
-    console.error("Tab not found:", tabId);
+// ---------------- COST SCALING ----------------
+// Space Company–style exponential growth
+function getCost(type) {
+  const c = gameState.creatures[type];
+  return Math.floor(c.baseCost * Math.pow(1.15, c.owned));
+}
+
+// ---------------- BUY CREATURE ----------------
+function buyCreature(type) {
+  const cost = getCost(type);
+  if (gameState.magic >= cost) {
+    gameState.magic -= cost;
+    gameState.creatures[type].owned++;
+    updateUI();
   }
 }
 
-// CLICK MAGIC
-function clickMagic() {
-  gameState.magicPower += 1;
-  document.getElementById("magic").textContent = gameState.magicPower;
+// ---------------- UPDATE UI ----------------
+function updateUI() {
+  document.getElementById("magic").textContent = Math.floor(gameState.magic);
+
+  document.getElementById("nifflerOwned").textContent =
+    gameState.creatures.niffler.owned;
+  document.getElementById("nifflerCost").textContent =
+    getCost("niffler");
+
+  document.getElementById("mooncalfOwned").textContent =
+    gameState.creatures.mooncalf.owned;
+  document.getElementById("mooncalfCost").textContent =
+    getCost("mooncalf");
 }
 
-// OPEN DEFAULT TAB ON LOAD
-openTab("creatures");
+// ---------------- GAME LOOP ----------------
+setInterval(() => {
+  let production = 0;
+
+  for (let type in gameState.creatures) {
+    const c = gameState.creatures[type];
+    production += c.owned * c.production;
+  }
+
+  gameState.magic += production;
+  updateUI();
+}, 1000);
+
+// ---------------- START ----------------
+openTab("a");
+updateUI();
