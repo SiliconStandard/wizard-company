@@ -1,4 +1,4 @@
-console.log("Creatures system loaded");
+console.log("Wizard Company loaded");
 
 // ---------------- GAME STATE ----------------
 let gameState = {
@@ -18,7 +18,7 @@ let gameState = {
   }
 };
 
-// ---------------- TAB SYSTEM (WORKING) ----------------
+// ---------------- TAB SYSTEM ----------------
 function openTab(id) {
   const tabs = document.getElementsByClassName("tab");
   for (let i = 0; i < tabs.length; i++) {
@@ -27,8 +27,13 @@ function openTab(id) {
   document.getElementById(id).style.display = "block";
 }
 
+// ---------------- CLICK MAGIC ----------------
+function clickMagic() {
+  gameState.magic += 1;
+  updateUI();
+}
+
 // ---------------- COST SCALING ----------------
-// Space Company–style exponential growth
 function getCost(type) {
   const c = gameState.creatures[type];
   return Math.floor(c.baseCost * Math.pow(1.15, c.owned));
@@ -72,6 +77,6 @@ setInterval(() => {
   updateUI();
 }, 1000);
 
-// ---------------- START ----------------
-openTab("a");
+// ---------------- START GAME ----------------
+openTab("creatures");
 updateUI();
