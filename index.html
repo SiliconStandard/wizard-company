@@ -2,7 +2,23 @@
 <html>
 <head>
   <title>Wizard Company</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: #0b0b0b;
+      color: white;
+      font-family: Arial;
+      text-align: center;
+    }
+    button {
+      padding: 10px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    .tab {
+      display: none;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
 
@@ -10,16 +26,42 @@
 
   <p>Magic Power: <span id="magic">0</span></p>
 
-  <button onclick="clickMagic()" style="font-size:20px;">
-    ✨ Cast Magic ✨
-  </button>
+  <button onclick="clickMagic()">✨ Cast Magic ✨</button>
 
   <hr>
 
-  <button onclick="buyNiffler()">Buy Niffler (10 Magic)</button>
-  <p>Nifflers owned: <span id="nifflerCount">0</span></p>
+  <!-- TAB BUTTONS -->
+  <button onclick="openTab('creatures')">Creatures</button>
+  <button onclick="openTab('upgrades')">Upgrades</button>
+  <button onclick="openTab('wands')">Wands</button>
+  <button onclick="openTab('wonders')">Wonders</button>
+
+  <!-- CREATURES TAB -->
+  <div id="creatures" class="tab">
+    <h2>🐾 Creatures</h2>
+    <button onclick="buyNiffler()">Buy Niffler (10 Magic)</button>
+    <p>Nifflers: <span id="nifflerCount">0</span></p>
+  </div>
+
+  <!-- UPGRADES TAB -->
+  <div id="upgrades" class="tab">
+    <h2>⬆️ Upgrades</h2>
+    <button onclick="buyClickUpgrade()">Stronger Clicks (25 Magic)</button>
+    <p>Click Power: <span id="clickPower">1</span></p>
+  </div>
+
+  <!-- WANDS TAB -->
+  <div id="wands" class="tab">
+    <h2>🪄 Wands</h2>
+    <p>Coming soon...</p>
+  </div>
+
+  <!-- WONDERS TAB -->
+  <div id="wonders" class="tab">
+    <h2>🏰 Room of Requirement</h2>
+    <p>Unlock powerful systems here later</p>
+  </div>
 
   <script src="main.js"></script>
 </body>
 </html>
-
