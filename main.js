@@ -1,54 +1,31 @@
+console.log("main.js loaded");
+
 let gameState = {
-  magicPower: 0,
-  nifflers: 0,
-  clickPower: 1,
-  currentTab: "creatures"
+  magicPower: 0
 };
 
-// TAB SYSTEM
-function openTab(tab) {
-  document.querySelectorAll(".tab").forEach(t => t.style.display = "none");
-  document.getElementById(tab).style.display = "block";
-  gameState.currentTab = tab;
-}
+// TAB SYSTEM — BULLETPROOF VERSION
+function openTab(tabId) {
+  console.log("Opening tab:", tabId);
 
-// UPDATE UI
-function updateUI() {
-  document.getElementById("magic").textContent = Math.floor(gameState.magicPower);
-  document.getElementById("nifflerCount").textContent = gameState.nifflers;
-  document.getElementById("clickPower").textContent = gameState.clickPower;
+  const tabs = document.getElementsByClassName("tab");
+  for (let i = 0; i < tabs.length; i++) {
+    tabs[i].style.display = "none";
+  }
+
+  const tab = document.getElementById(tabId);
+  if (tab) {
+    tab.style.display = "block";
+  } else {
+    console.error("Tab not found:", tabId);
+  }
 }
 
 // CLICK MAGIC
 function clickMagic() {
-  gameState.magicPower += gameState.clickPower;
-  updateUI();
+  gameState.magicPower += 1;
+  document.getElementById("magic").textContent = gameState.magicPower;
 }
 
-// BUY NIFFLER
-function buyNiffler() {
-  if (gameState.magicPower >= 10) {
-    gameState.magicPower -= 10;
-    gameState.nifflers++;
-    updateUI();
-  }
-}
-
-// CLICK UPGRADE
-function buyClickUpgrade() {
-  if (gameState.magicPower >= 25) {
-    gameState.magicPower -= 25;
-    gameState.clickPower++;
-    updateUI();
-  }
-}
-
-// GAME LOOP
-setInterval(() => {
-  gameState.magicPower += gameState.nifflers;
-  updateUI();
-}, 1000);
-
-// START
+// OPEN DEFAULT TAB ON LOAD
 openTab("creatures");
-updateUI();
