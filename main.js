@@ -3,6 +3,20 @@ console.log("Wizard Company loaded");
 // ---------------- GAME STATE ----------------
 let gameState = {
   magic: 0,
+  clickPower: 1,
+
+  upgrades: {
+    strongerSpells: {
+      bought: false,
+      cost: 25,
+      clickMultiplier: 2
+    },
+    creatureTraining: {
+      bought: false,
+      cost: 100,
+      productionMultiplier: 2
+    }
+  },
 
   creatures: {
     niffler: {
@@ -29,7 +43,7 @@ function openTab(id) {
 
 // ---------------- CLICK MAGIC ----------------
 function clickMagic() {
-  gameState.magic += 1;
+  gameState.magic += gameState.clickPower;
   updateUI();
 }
 
@@ -42,6 +56,7 @@ function getCost(type) {
 // ---------------- BUY CREATURE ----------------
 function buyCreature(type) {
   const cost = getCost(type);
+
   if (gameState.magic >= cost) {
     gameState.magic -= cost;
     gameState.creatures[type].owned++;
@@ -49,9 +64,27 @@ function buyCreature(type) {
   }
 }
 
+// ---------------- BUY UPGRADE ----------------
+function buyUpgrade(name) {
+  const upgrade = gameState.upgrades[name];
+  if (upgrade.bought) return;
+
+  if (gameState.magic >= upgrade.cost) {
+    gameState.magic -= upgrade.cost;
+    upgrade.bought = true;
+
+    if (upgrade.clickMultiplier) {
+      gameState.clickPower *= upgrade.clickMultiplier;
+    }
+
+    updateUI();
+  }
+}
+
 // ---------------- UPDATE UI ----------------
 function updateUI() {
-  document.getElementById("magic").textContent = Math.floor(gameState.magic);
+  document.getElementById("magic").textContent =
+    Math.floor(gameState.magic);
 
   document.getElementById("nifflerOwned").textContent =
     gameState.creatures.niffler.owned;
@@ -62,15 +95,25 @@ function updateUI() {
     gameState.creatures.mooncalf.owned;
   document.getElementById("mooncalfCost").textContent =
     getCost("mooncalf");
+
+  document.getElementById("strongerSpellsStatus").textContent =
+    gameState.upgrades.strongerSpells.bought ? "Bought" : "Not bought";
+
+  document.getElementById("creatureTrainingStatus").textContent =
+    gameState.upgrades.creatureTraining.bought ? "Bought" : "Not bought";
 }
 
 // ---------------- GAME LOOP ----------------
 setInterval(() => {
   let production = 0;
 
+  let multiplier = gameState.upgrades.creatureTraining.bought
+    ? gameState.upgrades.creatureTraining.productionMultiplier
+    : 1;
+
   for (let type in gameState.creatures) {
     const c = gameState.creatures[type];
-    production += c.owned * c.production;
+    production += c.owned * c.production * multiplier;
   }
 
   gameState.magic += production;
